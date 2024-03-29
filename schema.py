@@ -20,7 +20,7 @@ class Pump(Flow):
     updated_at: datetime
     created_at: datetime
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AddFlowData(BaseModel):
     pump_id: str
@@ -31,7 +31,7 @@ class GetFlowData(BaseModel):
     flow_rate: Optional[float]
     date: Optional[datetime]
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_encoders = {
             datetime: lambda v: v.timestamp(),
         }
@@ -57,7 +57,7 @@ class Valve(ValveBase):
     updated_at: datetime
     created_at: datetime
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Sensor's schemas
 class SensorBase(BaseModel):
@@ -81,7 +81,7 @@ class Sensor(SensorBase):
     updated_at: datetime
     created_at: datetime
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AddSensorData(BaseModel):
     sensor_id: str
@@ -101,7 +101,7 @@ class SensorData(BaseModel):
     temperature: float
     moisture: float
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_encoders = {
             datetime: lambda v: v.timestamp(),
         }
@@ -116,13 +116,13 @@ class SControl(BaseModel):
     updated_at: datetime
     sensor_id: Union[str, None] = None
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class SControlWithID(BaseModel):
     detail: str = "New section was successfully added to shift"
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class SectionCreate(BaseModel):
     shift_id: int
@@ -144,13 +144,13 @@ class Section(BaseModel):
     stops_at: Optional[float]
     section_sensors: List[SControl] = []
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class SectionWithID(BaseModel):
     detail: str = "New section was successfully added to shift"
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class TimerControl(BaseModel):
     shift_id: int
@@ -198,13 +198,13 @@ class TControl(BaseModel):
     starts: Union[time, None] = None
     stops: Union[time, None] = None
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class TControlWithID(BaseModel):
     detail: str = "New timer was successfully added to shift"
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AddShift(BaseModel):
     system_id: int
@@ -220,7 +220,7 @@ class Shifts(BaseModel):
     shifts_sections: List[Section] = []
     shift_timers: List[TControl] = []
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_encoders = {
             datetime: lambda v: v.timestamp(),
         }
@@ -229,7 +229,7 @@ class ShiftsWithID(BaseModel):
     detail: str = "New shift was successfully added to system"
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class SystemBase(BaseModel):
     name: str
@@ -250,7 +250,7 @@ class SystemID(BaseModel):
     location: str
     owner: str
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class System(SystemBase):
     id: int
@@ -263,7 +263,7 @@ class System(SystemBase):
     system_sensors: List[Sensor] = []
     system_shifts: List[Shifts] = []
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class LogCreate(BaseModel):
     dev_id: str
@@ -273,7 +273,7 @@ class LogCreate(BaseModel):
 class Logs(LogCreate):
     date: datetime
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_encoders = {
             datetime: lambda v: v.timestamp(),
         }
@@ -284,7 +284,7 @@ class UpdateLog(BaseModel):
 class CurrentTime(BaseModel):
     current_time: datetime = datetime.now()
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_encoders = {
             datetime: lambda v: v.timestamp(),
         }
@@ -309,7 +309,7 @@ class User(UserBase):
     created_at: datetime
     systems: List[System] = []
     class Config:
-        orm_mode = True
+        from_attributes = True
         
 class UserUpdate(BaseModel):
     name: Optional[str]
