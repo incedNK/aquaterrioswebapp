@@ -35,7 +35,7 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-wd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class OAuth2PasswordBearerCookie(OAuth2):
     def __init__(
         self,
