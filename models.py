@@ -1,5 +1,6 @@
-from sqlalchemy import Boolean, Column, Integer, String, Text, Time, ForeignKey, Float
+from sqlalchemy import Boolean, Column, Integer, String, Text, Time, ForeignKey, Float, DateTime
 from sqlalchemy.sql.sqltypes import TIMESTAMP
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 
@@ -24,6 +25,7 @@ class User(Base):
     secret = Column(String(50), unique=True)
 
     systems = relationship("System", back_populates="system_owner")
+    alerts = relationship("Notification", back_populates="notes")
 
 class System(Base):
     __tablename__ = "systems"
@@ -33,6 +35,8 @@ class System(Base):
         "users.username", ondelete="CASCADE"), nullable=False)
     systemID = Column(String(25), nullable=False, unique=True)
     name = Column(String(100), nullable=False)
+    area = Column(Float)
+    fruit = Column(String(250))
     location = Column(String(100), nullable=False)
     updated_at = Column(TIMESTAMP(timezone=True),
                         nullable=False, server_default=text('now()'))
@@ -81,6 +85,7 @@ class Sensor(Base):
     system_id = Column(Integer, ForeignKey(
         "systems.id", ondelete="CASCADE"), nullable=False)
     readings = Column(Float)
+    temp = Column(Float)
     set_lvl_1 = Column(Boolean)
     set_lvl_2 = Column(Boolean)
     set_lvl_3 = Column(Boolean)
@@ -179,6 +184,9 @@ class SensorData(Base):
     level_1 = Column(Float)
     level_2 = Column(Float)
     level_3 = Column(Float)
+    temp_1 = Column(Float)
+    temp_2 = Column(Float)
+    temp_3 = Column(Float)
     temperature = Column(Float)
     moisture = Column(Float)
     bat_level = Column(Float)
@@ -194,3 +202,49 @@ class Logs(Base):
     disable = Column(Boolean)
     date = Column(TIMESTAMP(timezone=True), nullable=False,
                   server_default=text('now()'))
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True)
+    user = Column(String(25), ForeignKey(
+        "users.username", ondelete="CASCADE"), nullable=False)
+    message = Column(Text)
+    read = Column(Boolean)
+    date = Column(TIMESTAMP(timezone=True), nullable=False,
+                  server_default=text('now()'))
+
+    notes = relationship("User", back_populates="alerts")
+
+
+class Subscription(Base):
+    __tablename__ = "subscriptions"
+
+    id = Column(Integer, primary_key=True)
+    mail = Column(String(50), unique=True)
+    date = Column(DateTime(timezone=True), server_default=func.now())
+
+class About(Base):
+    __tablename__ = "abouts"
+    
+    id = Column(Integer, primary_key=True)
+    header = Column(String)
+    text = Column(Text)
+    date = Column(DateTime(timezone=True), server_default=func.now())
+    
+
+class FAQ(Base):
+    __tablename__ = "faq"
+    
+    id = Column(Integer, primary_key=True)
+    header = Column(String)
+    text = Column(Text)
+    date = Column(DateTime(timezone=True), server_default=func.now())
+    
+class Forum(Base):
+    __tablename__ = "forum"
+    
+    id = Column(Integer, primary_key=True)
+    question = Column(String)
+    answer = Column(Text)
+    date = Column(DateTime(timezone=True), server_default=func.now())

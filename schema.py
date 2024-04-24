@@ -63,6 +63,7 @@ class Valve(ValveBase):
 class SensorBase(BaseModel):
     sensor_id: str
     readings: Optional[float] = 50
+    temp: Optional[float] = 15
     set_lvl_1: bool = False
     set_lvl_2: bool = True
     set_lvl_3: bool = False
@@ -89,6 +90,9 @@ class AddSensorData(BaseModel):
     level_1: float
     level_2: float
     level_3: float
+    temp_1: float 
+    temp_2: float 
+    temp_3: float 
     temperature: float
     moisture: float
 
@@ -98,6 +102,9 @@ class SensorData(BaseModel):
     level_1: float
     level_2: float
     level_3: float
+    temp_1: float 
+    temp_2: float 
+    temp_3: float
     temperature: float
     moisture: float
     class Config:
@@ -234,6 +241,8 @@ class ShiftsWithID(BaseModel):
 class SystemBase(BaseModel):
     name: str
     location: str
+    fruit: str
+    area: float
 
 class SystemCreate(SystemBase):
     systemID: str
@@ -242,12 +251,16 @@ class SystemCreate(SystemBase):
 class SystemUpdate(BaseModel):
     name: Optional[str]
     location: Optional[str]
+    area: Optional[float]
+    fruit: Optional[str]
     updated_at: datetime = datetime.now()
 
 class SystemID(BaseModel):
     id: int
     name: str
     location: str
+    area: float 
+    fruit: str
     owner: str
     class Config:
         from_attributes = True
@@ -288,6 +301,36 @@ class CurrentTime(BaseModel):
         json_encoders = {
             datetime: lambda v: v.timestamp(),
         }
+        
+# Handle admins notifications to users
+class NoteCreate(BaseModel):
+    user: str
+    read: bool = False
+    message: str
+   
+
+class Notifications(BaseModel):
+    id: int
+    user: str
+    message: str
+    read: bool
+    date: datetime
+    
+    class Config:
+        from_attributes = True 
+
+class UpdateNote(BaseModel):
+    read: bool = True
+
+#Subscriptions to services    
+class SubscriberCreate(BaseModel):
+    mail: str
+
+class Subscribtion(SubscriberCreate):
+    date: datetime
+    
+    class Config:
+        from_attributes = True
 
 # Handle users reads and creates
 class UserBase(BaseModel):
@@ -308,6 +351,7 @@ class User(UserBase):
     updated_at: datetime
     created_at: datetime
     systems: List[System] = []
+    alerts: List[Notifications] = []
     class Config:
         from_attributes = True
         

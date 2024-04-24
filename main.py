@@ -5,7 +5,7 @@ import models
 from db import engine
 from route import user_router, base_router, api_router
 
-models.Base.metadata.create_all(bind=engine)
+#models.Base.metadata.create_all(bind=engine)
 
 origins = ["*"]
 

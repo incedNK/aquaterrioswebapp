@@ -22,7 +22,7 @@ def create_system(db: Session, system: schema.SystemCreate):
     db.add(db_system)
     db.commit()
     db.refresh(db_system)
-    return db_system
+    return db_system 
 
 def update_system(db: Session, system: schema.SystemUpdate, system_id: int):
     system_query = db.query(models.System).filter(
@@ -431,13 +431,13 @@ def create_sensor_data(db: Session, sensor: schema.AddSensorData):
     db.refresh(db_data)
     return db_data
 
-def update_sensor_data(db: Session, sensor_id: str, readings: float):
+def update_sensor_data(db: Session, sensor_id: str, readings: float, temp: float):
     query_readings = db.query(models.Sensor).filter(
         models.Sensor.sensor_id == sensor_id)
     if not query_readings.first():
         return False
     query_readings.update(
-        {models.Sensor.readings: readings}, synchronize_session=False)
+        {models.Sensor.readings: readings, models.Sensor.temp: temp}, synchronize_session=False)
     db.commit()
     return True
 

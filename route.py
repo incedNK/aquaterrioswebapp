@@ -965,19 +965,22 @@ def sensor_data(sensor_data: schema.AddSensorData, db: Session = Depends(db.get_
     try:
         new_data = crud.create_sensor_data(db=db, sensor=sensor_data)
         sensor = crud.get_sensor(db=db, sensor_id=new_data.sensor_id)
-        data = {"level_1": new_data.level_1,
+        moisture = {"level_1": new_data.level_1,
                 "level_2": new_data.level_2, "level_3": new_data.level_3}
+        temp = {"level_1": new_data.temp_1,
+                "level_2": new_data.temp_2, "level_3": new_data.temp_3}
         settings = {"level_1": sensor.set_lvl_1,
                     "level_2": sensor.set_lvl_2, "level_3": sensor.set_lvl_3}
-        x = [1, 2, 3]
-        user_setup = []
-        user_setup = [f"level_{i}" for i in x if settings[f"level_{i}"]]
+        user_setup = [f"level_{i}" for i in range(1, 4) if settings[f"level_{i}"]]
         y = len(user_setup)
         new_readings = 0
-        for x in user_setup:
-            new_readings += data[x]/y
+        for i in user_setup:
+            new_readings += moisture[i]/y
+        new_temp = 0
+        for j in user_setup:
+            new_temp += temp[j]/y
         crud.update_sensor_data(
-            db=db, sensor_id=new_data.sensor_id, readings=new_readings)
+            db=db, sensor_id=new_data.sensor_id, readings=new_readings, temp= new_temp)
         return {"detail": "Successfully updated sensor readings"}
     except:
         return {"detail": "Couldn't find sensor in database"}
