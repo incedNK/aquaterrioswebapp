@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional, Union
 from datetime import datetime, timedelta
 import random
@@ -28,11 +28,8 @@ class Settings(BaseSettings):
     email : str 
     password: str
     
+    model_config = SettingsConfigDict(env_file='.env')
     
-    class Config:
-        env_file = ".env"
-    
-
 settings = Settings()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
