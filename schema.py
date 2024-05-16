@@ -13,7 +13,6 @@ class AddPump(Flow):
 
 class UpdatePump(BaseModel):
     current: float
-    updated_at: datetime = datetime.now()
 
 class Pump(Flow):
     system_id: int
@@ -25,7 +24,6 @@ class Pump(Flow):
 class AddFlowData(BaseModel):
     pump_id: str
     flow_rate: float
-    date: datetime = datetime.now()
 
 class GetFlowData(BaseModel):
     flow_rate: Optional[float]
@@ -46,11 +44,9 @@ class AddValve(ValveBase):
 
 class UpdateValve(BaseModel):
     status: Optional[bool]
-    updated_at: datetime = datetime.now()
 
 class UpdateValveStatus(BaseModel):
     status: Optional[bool]
-    updated_at: datetime = datetime.now()
 
 class Valve(ValveBase):
     system_id: int
@@ -75,7 +71,6 @@ class UpdateSensor(BaseModel):
     set_lvl_1: Optional[bool]
     set_lvl_2: Optional[bool]
     set_lvl_3: Optional[bool]
-    updated_at: datetime = datetime.now()
 
 class Sensor(SensorBase):
     system_id: int
@@ -102,9 +97,9 @@ class SensorData(BaseModel):
     level_1: float
     level_2: float
     level_3: float
-    temp_1: float 
-    temp_2: float 
-    temp_3: float
+    temp_1: Optional[float] 
+    temp_2: Optional[float] 
+    temp_3: Optional[float]
     temperature: float
     moisture: float
     class Config:
@@ -116,7 +111,6 @@ class SensorData(BaseModel):
 class SensorControler(BaseModel):
     section_id: int
     sensor_id: Optional[str]
-    updated_at: datetime = datetime.now()
 
 class SControl(BaseModel):
     id: int
@@ -124,6 +118,9 @@ class SControl(BaseModel):
     sensor_id: Union[str, None] = None
     class Config:
         from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.timestamp(),
+        }
 
 class SControlWithID(BaseModel):
     detail: str = "New section was successfully added to shift"
@@ -140,7 +137,6 @@ class SectionUpdate(BaseModel):
     sensors_settings: Optional[str]
     starts_at: Optional[float]
     stops_at: Optional[float]
-    updated_at: datetime = datetime.now()
 
 class Section(BaseModel):
     id: int
@@ -152,6 +148,9 @@ class Section(BaseModel):
     section_sensors: List[SControl] = []
     class Config:
         from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.timestamp(),
+        }
 
 class SectionWithID(BaseModel):
     detail: str = "New section was successfully added to shift"
@@ -186,7 +185,6 @@ class TimerUpdate(BaseModel):
     Sun: Optional[bool]
     starts: Optional[time]
     stops: Optional[time]
-    updated_at: datetime = datetime.now()
     def serialize(self):
         return {"Mon": self.Mon, "Tue": self.Tue, "Wed": self.Wed, "Thu": self.Thu,
                 "Fri": self.Fri, "Sat": self.Sat, "Sun": self.Sun,
@@ -206,6 +204,9 @@ class TControl(BaseModel):
     stops: Union[time, None] = None
     class Config:
         from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.timestamp(),
+        }
 
 class TControlWithID(BaseModel):
     detail: str = "New timer was successfully added to shift"
@@ -253,7 +254,6 @@ class SystemUpdate(BaseModel):
     location: Optional[str]
     area: Optional[float]
     fruit: Optional[str]
-    updated_at: datetime = datetime.now()
 
 class SystemID(BaseModel):
     id: int
@@ -277,6 +277,9 @@ class System(SystemBase):
     system_shifts: List[Shifts] = []
     class Config:
         from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.timestamp(),
+        }
 
 class LogCreate(BaseModel):
     dev_id: str
@@ -360,7 +363,6 @@ class UserUpdate(BaseModel):
     surname: Optional[str]
     address: Optional[str]
     email: Optional[EmailStr]
-    updated_at: datetime = datetime.now()
 
 class AdminUserUpdate(BaseModel):
     admin: Optional[bool]

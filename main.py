@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 import models
 from db import engine
@@ -25,3 +26,6 @@ app.include_router(api_router, prefix="/api", tags=["API"])
 @app.get("/")
 async def home():
     return {"detail": "Welcome to Aquaterrius api app."}
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)

@@ -759,7 +759,7 @@ def delete_shift_section(id: int, db: Session = Depends(db.get_db), current_user
         )
 
 # Delete sensor controler route
-@base_router.delete("/sensorControl/{id}")
+@base_router.delete("/sensorControler/{id}")
 def delete_sensor_controler(id: int, db: Session = Depends(db.get_db), current_user: str = Depends(crud.get_current_user)):
     controler_to_delete = crud.get_sensor_controler(db=db, id=id)
     if not controler_to_delete:

@@ -29,7 +29,9 @@ def update_system(db: Session, system: schema.SystemUpdate, system_id: int):
         models.System.id == system_id)
     if not system_query.first():
         return False
-    system_query.update(system.dict(), synchronize_session=False)
+    entry = system.dict()
+    entry['updated_at'] = datetime.now()
+    system_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -63,7 +65,9 @@ def update_pump(db: Session, pump: schema.UpdatePump, pump_id: str):
     pump_query = db.query(models.Pump).filter(models.Pump.pump_id == pump_id)
     if not pump_query.first():
         return False
-    pump_query.update(pump.dict(), synchronize_session=False)
+    entry = pump.dict()
+    entry['updated_at'] = datetime.now()
+    pump_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -98,7 +102,9 @@ def update_valve(db: Session, valve: schema.UpdateValve, valve_id: str):
         models.Valve.valve_id == valve_id)
     if not valve_query.first():
         return False
-    valve_query.update(valve.dict(), synchronize_session=False)
+    entry = valve.dict()
+    entry['updated_at'] = datetime.now()
+    valve_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -107,7 +113,9 @@ def update_valve_status(db: Session, valve: schema.UpdateValveStatus, valve_id: 
         models.Valve.valve_id == valve_id)
     if not valve_query.first():
         return False
-    valve_query.update(valve.dict(), synchronize_session=False)
+    entry = valve.dict()
+    entry['updated_at'] = datetime.now()
+    valve_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -149,7 +157,9 @@ def update_sensor(db: Session, sensor: schema.UpdateSensor, sensor_id: str):
         models.Sensor.sensor_id == sensor_id)
     if not sensor_query.first():
         return False
-    sensor_query.update(sensor.dict(), synchronize_session=False)
+    entry = sensor.dict()
+    entry['updated_at'] = datetime.now()
+    sensor_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -244,7 +254,9 @@ def change_section(db: Session, section: schema.SectionUpdate, id: int):
         models.Section.id == id)
     if not section_query.first():
         return False
-    section_query.update(section.dict(), synchronize_session=False)
+    entry = section.dict()
+    entry['updated_at'] = datetime.now()
+    section_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -284,7 +296,9 @@ def change_sensor_controler(db: Session, scontroler: schema.SensorControler, id:
         models.SensorControler.id == id)
     if not controler_query.first():
         return False
-    controler_query.update(scontroler.dict(), synchronize_session=False)
+    entry = scontroler.dict()
+    entry['updated_at'] = datetime.now()
+    controler_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -347,7 +361,9 @@ def change_timer_settings(db: Session, tcontroler: schema.TimerUpdate, id: int):
         models.Timer.id == id)
     if not controler_query.first():
         return False
-    controler_query.update(tcontroler.dict(), synchronize_session=False)
+    entry = tcontroler.dict()
+    entry['updated_at'] = datetime.now()
+    controler_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
@@ -496,7 +512,9 @@ def update_user(db: Session, username: str, user: schema.UserUpdate):
     user_query = db.query(models.User).filter(models.User.username == username)
     if not user_query.first():
         return False
-    user_query.update(user.dict(), synchronize_session=False)
+    entry = user.dict()
+    entry['updated_at'] = datetime.now()
+    user_query.update(entry, synchronize_session=False)
     db.commit()
     return True
 
